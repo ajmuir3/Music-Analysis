@@ -5,31 +5,31 @@ class SongAnalyzer:
     def __init__(self, sl):
         self.song_list = sl
 
-    def findAvgYear(song_list):
+    def findAvgYear(self):
         total = 0
-        for song in song_list:
+        for song in self.song_list:
             total += song.year
-        return round(total / len(song_list))
+        return round(total / len(self.song_list))
 
-    def findMedYear(song_list):
-        return song_list[len(song_list) // 2].year
+    def findMedYear(self):
+        return self.song_list[len(self.song_list) // 2].year
 
-    def findRangeYear(song_list):
-        return song_list[-1].year - song_list[0].year
+    def findRangeYear(self):
+        return self.song_list[-1].year - self.song_list[0].year
 
-    def songsByYear(song_list):
+    def songsByYear(self):
         year_to_numSongs = {}
-        for song in song_list:
+        for song in self.song_list:
             if (song.year not in year_to_numSongs):
                 year_to_numSongs[song.year] = 1
             else:
                 year_to_numSongs[song.year] += 1
         return year_to_numSongs
 
-    def songsByDecade(song_list):
+    def songsByDecade(self):
 
         decade_to_numSongs = {}
-        for song in song_list:
+        for song in self.song_list:
             decade = math.floor(song.year / 10) * 10
             if (decade not in decade_to_numSongs):
                 decade_to_numSongs[decade] = 1
