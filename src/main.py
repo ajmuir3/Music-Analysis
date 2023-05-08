@@ -1,36 +1,47 @@
 
 import os
-from src.Song import Song
-from src.SongAnalyzer import SongAnalyzer
-from src.SongPlotter import SongPlotter
 
-def readFile(filename):
-    song_list = []
-    errors = []
-    with open(filename,"r") as file:
-        for line in file:
-            try:
-                entry = line.split("	")
-                song_list.append(Song(entry[0], entry[1], int(entry[16])))
-            except ValueError as e:
-                errors.append(e)
-    return song_list
+import DatabaseConneciton as data_conn
+from SongAnalyzer import SongAnalyzer as song_anal
 
+    
 def main():
-    songs = sorted(readFile("/Users/ajmuir/Documents/MusicAnalysis/Music-Analysis/data/Music.txt"))
+    
+    csv_file = os.path.join("data","music.csv")
 
-    anal = SongAnalyzer(songs)
-    plotter = SongPlotter(songs)
+    database = "music_database_1.db"
+    dc = data_conn
 
-    print(f"There are a total of {len(songs)} songs you listen to:\n")
-    print(f"The range of your music spans {anal.findRangeYear()} years")
-    print(f"The average year of your music is {anal.findAvgYear()}")
-    print(f"The median year of your music is {anal.findMedYear()}")
+    dc.clear_data(database)
+    dc.insert_data(database, dc.readCSV(csv_file))
 
-    # print(anal) this works
+    # Initiating the class needs work
+    list = dc.return_data(database)
+    sa = song_anal
 
-    plotter.plotSongsByYearLine("testing1")
-    plotter.plotSongsByDecadeBar("testing2")
+    sa(list)
+
+    print(sa.findAvgYear(sa))
+    
+    
+    #sa = SongAnalyzer(list)
+
+    #print(sa)
+
+    #data_conn.display_data(database)
+
+    # anal = SongAnalyzer(songs)
+    # plotter = SongPlotter(songs)
+
+    # print(f"There are a total of {len(songs)} songs you listen to:\n")
+    # print(f"The range of your music spans {anal.findRangeYear()} years")
+    # print(f"The average year of your music is {anal.findAvgYear()}")
+    # print(f"The median year of your music is {anal.findMedYear()}")
+
+    # # print(anal) this works
+
+    # plotter.plotSongsByYearLine("testing1")
+    # plotter.plotSongsByDecadeBar("testing2")
 
     #plotSongsbyYear(songsByYear(songs))
 
